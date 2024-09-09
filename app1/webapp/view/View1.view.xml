@@ -1,0 +1,20 @@
+<mvc:View controllerName="com.childapp.app1.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+        <content>
+			<IllustratedMessage
+				title="{i18n>appTitle}"
+				illustrationType="sapIllus-SuccessHighFive"
+				enableVerticalResponsiveness="true"
+				description="{i18n>appDescription}">
+				<additionalContent>
+					<Button
+						id="helloButton"
+						text="{formatter: 'formatter.formatValue', path: 'i18n>btnText'}"
+						press="sayHello" />
+				</additionalContent>
+			</IllustratedMessage>
+		</content>
+    </Page>
+</mvc:View>

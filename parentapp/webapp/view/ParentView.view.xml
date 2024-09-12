@@ -1,9 +1,52 @@
-<mvc:View controllerName="parentapp.parentapp.controller.ParentView"
+<mvc:View xmlns:cards="sap.f.cards" xmlns:f="sap.f" controllerName="parentapp.parentapp.controller.ParentView"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
-    xmlns:core="sap.ui.core"
-    xmlns="sap.m">
+    xmlns:core="sap.ui.core" xmlns="sap.m" core:require="{formatter: 'parentapp/parentapp/model/formatter'}">
     <Page id="page" title="{i18n>title}">
         <content>
+            <HBox >
+                <f:Card width="500px" class="sapUiMediumMargin">
+                    <f:header>
+                        <cards:Header 
+                            title="Weather Status" 
+                            subtitle="Type the City Name and Find the Temperature" 
+                            iconSrc="sap-icon://light-mode"/>
+                    </f:header>
+                    <f:content>
+                        <HBox class="sapUiLargeMargin">
+                            <Input id="city" placeholder="Enter a city" width="250px" class="sapUiMediumMarginEnd"/>
+                            <Button text="Temperature" press="onTemperaturePress"/>
+                        </HBox>
+                    </f:content>
+                </f:Card>
+                <f:Card id="weatherDetail" visible="false" width="100%" class="sapUiMediumMargin">
+                    <f:header>
+                        <cards:Header id="weatherDetailHeader" iconSrc="sap-icon://light-mode" />
+                    </f:header>
+                    <f:content>
+                        <HeaderContainer class="weatherDetail" orientation="Horizontal" width="100%" showDividers="false">
+                            <Image class="sapUiSmallMargin" id="temperatureImg" width="100px" height="100px"/>
+                            <VBox class="temperatureBox">
+                                <Title class="temperatureBoxTitle" text="Temperature" wrapping="true" />
+                                <Text id="temperature" class="temperatureBoxTitle" text="{ path: 'temperatureModel>/temperature', formatter: 'formatter.formatTemperature' }" wrapping="true" />
+                            </VBox>
+                            <VBox class="humidityBox">
+                                <Title class="humidityBoxTitle" text="Humidity" wrapping="true" />
+                                <Text id="humidity" class="humidityBoxTitle" text="{ path: 'temperatureModel>/humidity', formatter: 'formatter.formatHumidity' }" wrapping="true" />
+                            </VBox>
+                            <VBox class="weatherStatusBox">
+                                <Title class="weatherStatusBoxTitle" text="Weather Status" wrapping="true" />
+                                <Text id="weatherStatus" class="weatherStatusBoxTitle" wrapping="true" />
+                            </VBox>
+                            <VBox class="windRateBox">
+                                <Title class="windRateBoxTitle" text="Wind Rate" wrapping="true" />
+                                <Text id="windRate" class="windRateBoxTitle" text="{ path: 'temperatureModel>/windRate', formatter: 'formatter.formatWindRate' }" wrapping="true" />
+                            </VBox>
+
+                        </HeaderContainer>
+                    </f:content>
+                </f:Card>
+            </HBox>
+
             <core:ComponentContainer
                 id="compNew1"
                 usage="myChildApp"

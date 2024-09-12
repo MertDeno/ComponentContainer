@@ -47,6 +47,9 @@
   },
   "sap.ui5": {
     "flexEnabled": true,
+    "config": {
+      "fullWidth": true
+    },
     "componentUsages": {
       "myChildApp":{
           "name": "com.childapp.app1",

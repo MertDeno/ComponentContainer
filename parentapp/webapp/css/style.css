@@ -1,1 +1,37 @@
 /* Enter your custom styles here */
+
+.weatherDetail .temperatureBox{
+    align-items: center;
+}
+
+.weatherDetail .humidityBox{
+    align-items: center;
+}
+
+.weatherDetail .weatherStatusBox{
+    align-items: center;
+}
+
+.weatherDetail .windRateBox{
+    align-items: center;
+}
+
+.weatherDetail .temperatureBox .temperatureBoxTitle {
+    font-size: 1.5rem;
+}
+
+.weatherDetail .humidityBox .humidityBoxTitle {
+    font-size: 1.5rem;
+}
+
+.weatherDetail .weatherStatusBox .weatherStatusBoxTitle {
+    font-size: 1.5rem;
+}
+
+.weatherDetail .windRateBox .windRateBoxTitle {
+    font-size: 1.5rem;
+}
+
+.sapUiMediumMargin .headerDetail {
+    font-size: large;
+}

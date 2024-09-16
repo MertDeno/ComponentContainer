@@ -1,10 +1,11 @@
-<mvc:View xmlns:cards="sap.f.cards" xmlns:f="sap.f" controllerName="parentapp.parentapp.controller.ParentView"
-    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+<mvc:View xmlns:chart="sap.suite.ui.commons" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data" 
+    xmlns:viz="sap.viz.ui5.controls" xmlns:cards="sap.f.cards" xmlns:f="sap.f" controllerName="parentapp.parentapp.controller.ParentView"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns:layout="sap.ui.layout"
     xmlns:core="sap.ui.core" xmlns="sap.m" core:require="{formatter: 'parentapp/parentapp/model/formatter'}">
     <Page id="page" title="{i18n>title}">
         <content>
-            <HBox >
-                <f:Card width="500px" class="sapUiMediumMargin">
+            <HBox class="mainContent">
+                <f:Card width="100%" class="sapUiMediumMargin">
                     <f:header>
                         <cards:Header 
                             title="Weather Status" 
@@ -12,37 +13,60 @@
                             iconSrc="sap-icon://light-mode"/>
                     </f:header>
                     <f:content>
-                        <HBox class="sapUiLargeMargin">
-                            <Input id="city" placeholder="Enter a city" width="250px" class="sapUiMediumMarginEnd"/>
-                            <Button text="Temperature" press="onTemperaturePress"/>
-                        </HBox>
-                    </f:content>
-                </f:Card>
-                <f:Card id="weatherDetail" visible="false" width="100%" class="sapUiMediumMargin">
-                    <f:header>
-                        <cards:Header id="weatherDetailHeader" iconSrc="sap-icon://light-mode" />
-                    </f:header>
-                    <f:content>
-                        <HeaderContainer class="weatherDetail" orientation="Horizontal" width="100%" showDividers="false">
-                            <Image class="sapUiSmallMargin" id="temperatureImg" width="100px" height="100px"/>
-                            <VBox class="temperatureBox">
-                                <Title class="temperatureBoxTitle" text="Temperature" wrapping="true" />
-                                <Text id="temperature" class="temperatureBoxTitle" text="{ path: 'temperatureModel>/temperature', formatter: 'formatter.formatTemperature' }" wrapping="true" />
-                            </VBox>
-                            <VBox class="humidityBox">
-                                <Title class="humidityBoxTitle" text="Humidity" wrapping="true" />
-                                <Text id="humidity" class="humidityBoxTitle" text="{ path: 'temperatureModel>/humidity', formatter: 'formatter.formatHumidity' }" wrapping="true" />
-                            </VBox>
-                            <VBox class="weatherStatusBox">
-                                <Title class="weatherStatusBoxTitle" text="Weather Status" wrapping="true" />
-                                <Text id="weatherStatus" class="weatherStatusBoxTitle" wrapping="true" />
-                            </VBox>
-                            <VBox class="windRateBox">
-                                <Title class="windRateBoxTitle" text="Wind Rate" wrapping="true" />
-                                <Text id="windRate" class="windRateBoxTitle" text="{ path: 'temperatureModel>/windRate', formatter: 'formatter.formatWindRate' }" wrapping="true" />
-                            </VBox>
-
-                        </HeaderContainer>
+                        <VBox class="sapUiLargeMargin">
+                            <HBox>
+                                <Input id="cityInput" placeholder="Enter a city" width="250px" class="sapUiMediumMarginEnd"/>
+                                <Button text="Temperature" press="onTemperaturePress"/>
+                            </HBox>
+                            <FlexBox id="cityAndTime" visible="false" height="50px" alignContent="Center" justifyContent="Center" class="cityAndTime">
+                                <Text id="city" class="city" />
+                                <Text id="time" class="time" />
+                            </FlexBox>
+                            <HeaderContainer id="weatherDetail" visible="false" class="weatherDetail" orientation="Horizontal" width="100%" showDividers="false">
+                                <Image class="sapUiSmallMargin" id="temperatureImg" width="100px" height="100px"/>
+                                <VBox class="temperatureBox">
+                                    <Title class="temperatureBoxTitle" text="Temperature" wrapping="true" />
+                                    <Text id="temperature" class="temperatureBoxTitle" text="{ path: 'temperatureModel>/temperature', formatter: 'formatter.formatTemperature' }" wrapping="true" />
+                                </VBox>
+                                <VBox class="humidityBox">
+                                    <Title class="humidityBoxTitle" text="Humidity" wrapping="true" />
+                                    <Text id="humidity" class="humidityBoxTitle" text="{ path: 'temperatureModel>/humidity', formatter: 'formatter.formatHumidity' }" wrapping="true" />
+                                </VBox>
+                                <VBox class="weatherStatusBox">
+                                    <Title class="weatherStatusBoxTitle" text="Weather Status" wrapping="true" />
+                                    <Text id="weatherStatus" class="weatherStatusBoxTitle" wrapping="true" />
+                                </VBox>
+                                <VBox class="windRateBox">
+                                    <Title class="windRateBoxTitle" text="Wind Rate" wrapping="true" />
+                                    <Text id="windRate" class="windRateBoxTitle" text="{ path: 'temperatureModel>/windRate', formatter: 'formatter.formatWindRate' }" wrapping="true" />
+                                </VBox>
+                            </HeaderContainer>     
+                            <chart:ChartContainer id="idChartContainer" visible="false" width="1000px" showLegendButton="true">
+                                <chart:ChartContainerContent id="idChartContainercontent">
+                                    <chart:content>
+                                        <viz:Popover id="idPopOver" />
+                                        <viz:VizFrame id="idVizFrame" vizType="area" uiConfig="{applicationSet:'fiori'}">
+                                            <viz:dataset>
+                                                <viz.data:FlattenedDataset id="flattenData" data="{chartData>/}">
+                                                    <viz.data:dimensions>
+                                                        <viz.data:DimensionDefinition name="Datetime" value="{datetime}"/>
+                                                    </viz.data:dimensions>
+                                                    <viz.data:measures>
+                                                        <viz.data:MeasureDefinition name="Maximum Degree" value="{max_temp}"/>
+                                                        <viz.data:MeasureDefinition name="Minimum Degree" value="{min_temp}"/>
+                                                    </viz.data:measures>
+                                                </viz.data:FlattenedDataset>
+                                            </viz:dataset>
+                                            <viz:feeds>
+                                                <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Datetime" />
+                                                <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Maximum Degree" />
+                                                <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Minimum Degree" />
+                                            </viz:feeds>
+                                        </viz:VizFrame>        
+                                    </chart:content>
+                                </chart:ChartContainerContent>
+                            </chart:ChartContainer>                  
+                        </VBox>
                     </f:content>
                 </f:Card>
             </HBox>

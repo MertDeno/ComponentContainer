@@ -27,6 +27,12 @@
           }
         }
       }
+    },
+    "dataSources": {
+      "citiesRemote":{
+        "uri": "/myDestination/api?key=CITY_API_KEY",
+        "type": "JSON"
+      }
     }
   },
   "sap.ui": {
@@ -46,7 +52,7 @@
     }
   },
   "sap.ui5": {
-    "flexEnabled": true,
+    "flexEnabled": false,
     "config": {
       "fullWidth": true
     },
@@ -58,7 +64,7 @@
           },
           "lazy": true
       }
-  },    
+    },    
     "dependencies": {
       "minUI5Version": "1.128.0",
       "libs": {
@@ -81,6 +87,21 @@
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
           "bundleName": "parentapp.parentapp.i18n.i18n"
+        }
+      },
+      "":{
+        "dataSource": "cityService",
+        "settings": {
+          "defaultBindingMode": "TwoWay" 
+        }
+      }
+    },
+    "dataSources": {
+      "cityService": {
+        "uri": "/destination/CityAPI/city?name=",
+        "type": "REST",
+        "settings":{
+          "useBatch": false
         }
       }
     },

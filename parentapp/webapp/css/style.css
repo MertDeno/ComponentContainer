@@ -1,4 +1,26 @@
 /* Enter your custom styles here */
+.mainContent {
+    align-content: center;
+}
+
+.weatherDetail{
+    display: flex;
+    justify-content: center;
+}
+
+.cityAndTime{
+    margin-top: 2rem;
+}
+
+.cityAndTime .city{
+    font-size: large;
+    margin-right: 0.75rem;
+}
+
+.cityAndTime .time{
+    font-size: large;
+    margin-left: 0.75rem;
+}
 
 .weatherDetail .temperatureBox{
     align-items: center;

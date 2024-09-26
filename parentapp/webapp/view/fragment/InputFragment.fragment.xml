@@ -1,0 +1,4 @@
+<HBox xmlns="sap.m">
+    <Input id="cityInput" placeholder="Enter a city" width="250px" class="sapUiMediumMarginEnd"/>
+    <Button text="Temperature" press="onTemperaturePress"/>
+</HBox>

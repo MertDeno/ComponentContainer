@@ -2,7 +2,7 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/ComponentContainer",
     "sap/m/MessageBox",
-    "mytsapp2ui/model/formatter",
+    "parentapp/parentapp/model/formatter",
     "sap/ui/model/json/JSONModel",
     'sap/ui/core/BusyIndicator'    
 ],
@@ -12,7 +12,7 @@ sap.ui.define([
     function (Controller, ComponentContainer, MessageBox, formatter, JSONModel, BusyIndicator) {
         "use strict";
 
-        return Controller.extend("mytsapp2ui.controller.MainView", {
+        return Controller.extend("parentapp.parentapp.controller.ParentView", {
             formatter: formatter,
             onInit: function () {
                 debugger

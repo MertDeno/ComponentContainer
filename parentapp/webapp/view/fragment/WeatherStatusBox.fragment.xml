@@ -1,0 +1,4 @@
+<VBox class="weatherStatusBox" xmlns="sap.m">
+    <Title class="weatherStatusBoxTitle" text="Weather Status" wrapping="true" />
+    <Text class="weatherStatusBoxTitle" wrapping="true" text="{temperatureModel>/weatherDescription/weather_desc/0}"/>
+</VBox>

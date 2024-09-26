@@ -1,0 +1,4 @@
+<VBox class="windRateBox" xmlns="sap.m">
+    <Title class="windRateBoxTitle" text="Wind Rate" wrapping="true" />
+    <Text class="windRateBoxTitle" text="{ path: 'temperatureModel>/windRate', formatter: 'formatter.formatWindRate' }" wrapping="true" />
+</VBox>

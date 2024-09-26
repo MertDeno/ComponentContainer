@@ -1,0 +1,4 @@
+<VBox class="humidityBox" xmlns="sap.m">
+    <Title class="humidityBoxTitle" text="Humidity" wrapping="true" />
+    <Text class="humidityBoxTitle" text="{ path: 'temperatureModel>/humidity', formatter: 'formatter.formatHumidity' }" wrapping="true" />
+</VBox>

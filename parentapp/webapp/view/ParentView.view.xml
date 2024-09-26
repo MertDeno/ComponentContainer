@@ -1,8 +1,8 @@
 <mvc:View 
     xmlns:chart="sap.suite.ui.commons" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data"
-    controllerName="mytsapp2ui.controller.MainView" displayBlock="true" xmlns:layout="sap.ui.layout"
+    controllerName="parentapp.parentapp.controller.ParentView" displayBlock="true" xmlns:layout="sap.ui.layout"
     xmlns:mvc="sap.ui.core.mvc" xmlns:viz="sap.viz.ui5.controls" xmlns:cards="sap.f.cards" xmlns:f="sap.f"
-    xmlns:core="sap.ui.core" xmlns="sap.m" core:require="{formatter: 'mytsapp2ui/model/formatter'}">
+    xmlns:core="sap.ui.core" xmlns="sap.m" core:require="{formatter: 'parentapp/parentapp/model/formatter'}">
     <Page id="page" title="{i18n>title}">
                 <content>
             <HBox class="mainContent">
@@ -15,33 +15,8 @@
                     </f:header>
                     <f:content>
                         <VBox class="sapUiLargeMargin">
-                            <HBox>
-                                <Input id="cityInput" placeholder="Enter a city" width="250px" class="sapUiMediumMarginEnd"/>
-                                <Button text="Temperature" press="onTemperaturePress"/>
-                            </HBox>
-                            <FlexBox visible="{temperatureModel>/cityAndTimeVisible}" height="50px" alignContent="Center" justifyContent="Center" class="cityAndTime">
-                                <Text class="city" text="{temperatureModel>/city}"/>
-                                <Text class="time" text="{temperatureModel>/time}"/>
-                            </FlexBox>
-                            <HeaderContainer visible="{temperatureModel>/weatherDetailVisible}" class="weatherDetail" orientation="Horizontal" width="100%" showDividers="false">
-                                <Image class="sapUiSmallMargin" width="100px" height="100px" src="{temperatureModel>/weatherIcon/weather_icon/0}"/>
-                                <VBox class="temperatureBox">
-                                    <Title class="temperatureBoxTitle" text="Temperature" wrapping="true" />
-                                    <Text class="temperatureBoxTitle" text="{ path: 'temperatureModel>/temperature', formatter: 'formatter.formatTemperature' }" wrapping="true" />
-                                </VBox>
-                                <VBox class="humidityBox">
-                                    <Title class="humidityBoxTitle" text="Humidity" wrapping="true" />
-                                    <Text class="humidityBoxTitle" text="{ path: 'temperatureModel>/humidity', formatter: 'formatter.formatHumidity' }" wrapping="true" />
-                                </VBox>
-                                <VBox class="weatherStatusBox">
-                                    <Title class="weatherStatusBoxTitle" text="Weather Status" wrapping="true" />
-                                    <Text class="weatherStatusBoxTitle" wrapping="true" text="{temperatureModel>/weatherDescription/weather_desc/0}"/>
-                                </VBox>
-                                <VBox class="windRateBox">
-                                    <Title class="windRateBoxTitle" text="Wind Rate" wrapping="true" />
-                                    <Text class="windRateBoxTitle" text="{ path: 'temperatureModel>/windRate', formatter: 'formatter.formatWindRate' }" wrapping="true" />
-                                </VBox>
-                            </HeaderContainer>     
+                            <core:Fragment fragmentName="parentapp.parentapp.view.fragment.InputFragment" type="XML" />
+                            <core:Fragment fragmentName="parentapp.parentapp.view.fragment.CurrentView" type="XML" />    
                             <chart:ChartContainer id="idChartContainer" visible="false" width="1000px" showLegendButton="true">
                                 <chart:ChartContainerContent id="idChartContainercontent">
                                     <chart:content>

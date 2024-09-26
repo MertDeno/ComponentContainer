@@ -1,0 +1,13 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+    <FlexBox visible="{temperatureModel>/cityAndTimeVisible}" height="50px" alignContent="Center" justifyContent="Center" class="cityAndTime">
+        <Text class="city" text="{temperatureModel>/city}"/>
+        <Text class="time" text="{temperatureModel>/time}"/>
+    </FlexBox>
+    <HeaderContainer visible="{temperatureModel>/weatherDetailVisible}" class="weatherDetail" orientation="Horizontal" width="100%" showDividers="false">
+        <Image class="sapUiSmallMargin" width="100px" height="100px" src="{temperatureModel>/weatherIcon/weather_icon/0}"/>
+        <core:Fragment fragmentName="parentapp.parentapp.view.fragment.TemperatureBox" type="XML" />
+        <core:Fragment fragmentName="parentapp.parentapp.view.fragment.HumidityBox" type="XML" />
+        <core:Fragment fragmentName="parentapp.parentapp.view.fragment.WeatherStatusBox" type="XML" />
+        <core:Fragment fragmentName="parentapp.parentapp.view.fragment.WindRateBox" type="XML" />
+    </HeaderContainer> 
+</core:FragmentDefinition>

@@ -91,25 +91,27 @@ function (Controller, MessageBox, formatter, JSONModel, BusyIndicator) {
             })
             .then((oData) => {          //After everything processed smoothly, our code will set values of the header section of the card
                 debugger
-                console.log(oData)
                 result = oData.current
                 location = oData.location
                 var city = oData.request.query
                 
-                var oWeatherModel = new JSONModel({temperature:result.temperature, humidity:result.humidity, windRate: result.wind_speed});
+                var oWeatherModel = new JSONModel({
+                    temperature:result.temperature, 
+                    humidity:result.humidity, 
+                    windRate: result.wind_speed, 
+                    weatherDescription:{
+                        weather_desc:result.weather_descriptions
+                    },
+                    weatherIcon:{
+                        weather_icon: result.weather_icons
+                    },
+                    city: city,
+                    time: location.localtime
+                });
                 
-                oView.byId("weatherDetail").setVisible(true)
-                
+                oView.byId("weatherDetail").setVisible(true)                
                 oView.byId("cityAndTime").setVisible(true)
-                oView.byId("city").setText(city)
-                oView.byId("time").setText(location.localtime)
 
-                
-                oView.byId("temperature").setText(result.temperature)
-                oView.byId("humidity").setText(result.humidity)
-                oView.byId("weatherStatus").setText(result.weather_descriptions[0])
-                oView.byId("windRate").setText(result.wind_speed)
-                oView.byId("temperatureImg").setSrc(result.weather_icons[0])
                 oView.setModel(oWeatherModel, "temperatureModel")
                 this.showForecasts(cityName)            //In here we need to fetch the forecasts of the following seven days, in response to that our code calls this function
             })

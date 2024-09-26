@@ -39,8 +39,6 @@ sap.ui.define([
     
                 BusyIndicator.show(700)             //Busy indicator is triggered until all the data is fetched from APIs
                 oView.byId("idChartContainer").setVisible(false)
-                oView.byId("weatherDetail").setVisible(false)
-                oView.byId("cityAndTime").setVisible(false)
     
                 //All the containers are set to unvisible until the data is fetched
                 

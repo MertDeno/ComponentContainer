@@ -13,12 +13,13 @@
     "axios": "^1.7.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+    "express": "^4.21.0",
     "node-fetch": "^2.7.0"
   },
   "devDependencies": {
     "@sap/ui5-builder-webide-extension": "^1.1.9",
     "@sap/ux-ui5-tooling": "1",
-    "@ui5/cli": "^3.0.0",
+    "@ui5/cli": "^3.11.3",
     "mbt": "^1.2.27",
     "ui5-task-zipper": "^3.1.3"
   },

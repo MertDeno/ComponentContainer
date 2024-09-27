@@ -32,11 +32,8 @@ sap.ui.define([
                 debugger
                 var oView = this.getView(),
                 oCity = oView.byId("cityInput").getValue(),
-                oUrl = "https://api.api-ninjas.com/v1/city?name="+oCity,
-                oHeaders = new Headers({
-                    "X-Api-Key": "Dt0G3/fCeMTymkweJEptGg==NK9Tes5myXpESOmr"
-                })
-    
+                oUrl = "http://localhost:8080/getCityData?city=" + oCity
+
                 BusyIndicator.show(700)             //Busy indicator is triggered until all the data is fetched from APIs
                 oView.byId("idChartContainer").setVisible(false)
     
@@ -51,10 +48,7 @@ sap.ui.define([
                 //oCity == "" ? (MessageBox.error("City name cannot be blank"), BusyIndicator.hide()) : oCity = oCity
     
                 if(oCity != ""){                
-                    fetch(oUrl, {
-                        method: "GET",
-                        headers: oHeaders
-                    })
+                    fetch(oUrl)
                     .then((oResponse) => {
                         debugger
                         return oResponse.json() 

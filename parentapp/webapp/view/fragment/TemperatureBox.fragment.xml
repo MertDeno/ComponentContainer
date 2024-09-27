@@ -1,4 +1,4 @@
 <VBox class="temperatureBox" xmlns="sap.m">
-    <Title class="temperatureBoxTitle" text="Temperature" wrapping="true" />
+    <Title class="temperatureBoxTitle" text="{i18n>temperatureBoxTxt}" wrapping="true" />
     <Text class="temperatureBoxTitle" text="{ path: 'temperatureModel>/temperature', formatter: 'formatter.formatTemperature' }" wrapping="true" />
 </VBox>

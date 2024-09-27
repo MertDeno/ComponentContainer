@@ -12,7 +12,6 @@ const port = 8080
 app.use(cors())
 
 app.get("/getCityData", async(req, res) => {
-    debugger
     const city = req.query.city
     const cityAPIKey = process.env.city_API_key
     const url = `https://api.api-ninjas.com/v1/city?name=${city}`
@@ -36,14 +35,11 @@ app.get("/getCityData", async(req, res) => {
 
     console.log(response.data)
     res.send(response.data)
-    //res.send(data)
 })
 
 app.get("/getTemperature", async(req, res) => {
-    debugger
-    const city = req.query.cityName
+    const city = req.query.city
     const url = `https://api.weatherstack.com/current?access_key=${process.env.temperature_API_Key}&query=${city}`
-    console.log(url+" 3 32")
 
     const response = await axios({
         method:"GET",
@@ -61,9 +57,30 @@ app.get("/getTemperature", async(req, res) => {
         },        
     })
 
-    console.log(response.data)
     res.send(response.data)
-    //res.send(data)
+})
+
+app.get("/getForecasts", async(req, res) => {
+    const city = req.query.city
+    const url = `https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&days=8&key=${process.env.forecast_API_Key}`
+
+    const response = await axios({
+        method: "GET",
+        url: url,
+        host: "localhost",
+        params:{
+            $format: "json"
+        },
+        headers:{
+            "X-Api-Key": process.env.forecast_API_Key,
+            'Content-Type':'application/json',
+            'Accept':'application/json',
+            "x-csrf-token" : "Fetch",
+            "Access-Control-Allow-Origin": true            
+        }
+    })
+
+    res.send(response.data)
 })
 
 

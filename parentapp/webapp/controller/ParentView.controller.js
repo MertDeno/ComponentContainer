@@ -28,24 +28,24 @@ sap.ui.define([
     
             onTemperaturePress: function(){         //Function is fired when the temperature button is triggered 
                 var oView = this.getView(),
-                oCity = oView.byId("cityInput").getValue(),
-                oUrl = "http://localhost:8080/getCityData?city="+oCity
+                vCity = oView.byId("cityInput").getValue(),
+                vUrl = "http://localhost:8080/getCityData?city="+vCity
 
                 BusyIndicator.show(700)             //Busy indicator is triggered until all the data is fetched from APIs
                 this.setEverythingNotVisible()
     
                 //All the containers are set to unvisible until the data is fetched
                 
-                if(oCity == ""){
+                if(vCity == ""){
                     MessageBox.error("City name cannot be blank") 
                     BusyIndicator.hide()
                     return
                 }
     
-                //oCity == "" ? (MessageBox.error("City name cannot be blank"), BusyIndicator.hide()) : oCity = oCity
+                //vCity == "" ? (MessageBox.error("City name cannot be blank"), BusyIndicator.hide()) : vCity = vCity
     
-                if(oCity != ""){                
-                    fetch(oUrl,{
+                if(vCity != ""){                
+                    fetch(vUrl,{
                         method: "GET"
                     })
                     .then((oResponse) => {
@@ -58,8 +58,8 @@ sap.ui.define([
                             BusyIndicator.hide()
                         }
                         else{
-                            oCity = oData[0].name
-                            this.showTemperature(oCity)     //The aim is reaching to the details of the city's weather status, so our code leads us to this function
+                            vCity = oData[0].name
+                            this.showTemperature(vCity)     //The aim is reaching to the details of the city's weather status, so our code leads us to this function
                         }
     
                     })
@@ -72,11 +72,11 @@ sap.ui.define([
             },
             showTemperature: function(cityName){
                 var oView = this.getView(),
-                oUrl = `http://localhost:8080/getTemperature?city=${cityName}`,
+                vUrl = `http://localhost:8080/getTemperature?city=${cityName}`,
                 result = {},
                 location = {}
     
-                fetch(oUrl,{
+                fetch(vUrl,{
                     method: "GET"
                 })
                 .then((response) => {
@@ -115,7 +115,7 @@ sap.ui.define([
             showForecasts: function(cityName){
                 //In this method, all the data will be visible via graphics which include both the max and min degrees of those following days
                 var oView = this.getView(),
-                    oUrl = `http://localhost:8080/getForecasts?city=${cityName}`,
+                    vUrl = `http://localhost:8080/getForecasts?city=${cityName}`,
                     oModelChart = new JSONModel(),
                     oVizFrame = oView.byId("idVizFrame"),
                     oVizPopover = oView.byId("idPopOver"),
@@ -141,7 +141,7 @@ sap.ui.define([
                     }
                 
     
-                fetch(oUrl,{
+                fetch(vUrl,{
                     method: "GET"
                 })
                 .then((response) => response.json() )

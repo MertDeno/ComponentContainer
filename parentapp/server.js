@@ -32,8 +32,6 @@ app.get("/getCityData", async(req, res) => {
                 "Access-Control-Allow-Origin": true
             },        
         })
-    
-        console.log(response.data)
         res.send(response.data)
     }
     else{

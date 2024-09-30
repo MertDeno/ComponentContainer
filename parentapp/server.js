@@ -15,26 +15,31 @@ app.get("/getCityData", async(req, res) => {
     const city = req.query.city
     const cityAPIKey = process.env.city_API_key
     const url = `https://api.api-ninjas.com/v1/city?name=${city}`
-    console.log(city+" 3 32")
 
-    const response = await axios({
-        method:"GET",
-        url: url,
-        host : 'localhost',    
-        params: {
-            $format: "json"
-        },
-        headers:{
-            "X-Api-Key": cityAPIKey,
-            'Content-Type':'application/json',
-            'Accept':'application/json',
-            "x-csrf-token" : "Fetch",
-            "Access-Control-Allow-Origin": true
-        },        
-    })
+    if(city.length != 0){
+        const response = await axios({
+            method:"GET",
+            url: url,
+            host : 'localhost',    
+            params: {
+                $format: "json"
+            },
+            headers:{
+                "X-Api-Key": cityAPIKey,
+                'Content-Type':'application/json',
+                'Accept':'application/json',
+                "x-csrf-token" : "Fetch",
+                "Access-Control-Allow-Origin": true
+            },        
+        })
+    
+        console.log(response.data)
+        res.send(response.data)
+    }
+    else{
+        res.send("")
+    }
 
-    console.log(response.data)
-    res.send(response.data)
 })
 
 app.get("/getTemperature", async(req, res) => {

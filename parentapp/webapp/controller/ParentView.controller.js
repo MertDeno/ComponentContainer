@@ -3,12 +3,15 @@ sap.ui.define([
     "sap/m/MessageBox",
     "parentapp/parentapp/model/formatter",
     "sap/ui/model/json/JSONModel",
-    'sap/ui/core/BusyIndicator'    
+    'sap/ui/core/BusyIndicator',
+    "parentapp/parentapp/util/TemperatureService",
+    "parentapp/parentapp/util/CityFetchService",
+    "parentapp/parentapp/util/ForecastService"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, MessageBox, formatter, JSONModel, BusyIndicator) {
+    function (Controller, MessageBox, formatter, JSONModel, BusyIndicator, TemperatureService, CityFetchService, ForecastService) {
         "use strict";
 
         return Controller.extend("parentapp.parentapp.controller.ParentView", {
@@ -29,93 +32,70 @@ sap.ui.define([
             onTemperaturePress: function(){         //Function is fired when the temperature button is triggered 
                 var oView = this.getView(),
                 vCity = oView.byId("cityInput").getValue(),
-                vUrl = "http://localhost:8080/getCityData?city="+vCity
+                oCityFetchService = new CityFetchService()
 
-                BusyIndicator.show(700)             //Busy indicator is triggered until all the data is fetched from APIs
                 this.setEverythingNotVisible()
-    
-                //All the containers are set to unvisible until the data is fetched
-                
-                if(vCity == ""){
-                    MessageBox.error("City name cannot be blank") 
-                    BusyIndicator.hide()
-                    return
-                }
-    
-                //vCity == "" ? (MessageBox.error("City name cannot be blank"), BusyIndicator.hide()) : vCity = vCity
-    
-                if(vCity != ""){                
-                    fetch(vUrl,{
-                        method: "GET"
-                    })
-                    .then((oResponse) => {
-                        return oResponse.json() 
-                    })
-                    .then((oData) => {
-                        // Set the API data into the model
-                        if(oData.length === 0){
+
+                oView.setBusy(true)
+
+                oCityFetchService.getCity(vCity)
+                    .then((oData) => {   
+                        if(oData.length == 0){
                             MessageBox.error("City name cannot be found")
-                            BusyIndicator.hide()
-                        }
+                            oView.setBusy(false)
+                        }                     
                         else{
                             vCity = oData[0].name
                             this.showTemperature(vCity)     //The aim is reaching to the details of the city's weather status, so our code leads us to this function
                         }
-    
                     })
-                    .catch((oError) => {
-                        console.log("An error has occured:"+oError)
-                        MessageBox.error("Invalid city name")
-                        BusyIndicator.hide()
-                    })
-                }
+                .catch(() => {
+                    oView.setBusy(false)
+                })
             },
             showTemperature: function(cityName){
                 var oView = this.getView(),
-                vUrl = `http://localhost:8080/getTemperature?city=${cityName}`,
                 result = {},
-                location = {}
-    
-                fetch(vUrl,{
-                    method: "GET"
-                })
-                .then((response) => {
-                    return response.json()
-                })
-                .then((oData) => {          //After everything processed smoothly, our code will set values of the header section of the card
-                    result = oData.current
-                    location = oData.location
-                    var city = oData.request.query
-                    
-                    var oWeatherModel = new JSONModel({
-                        temperature:result.temperature, 
-                        humidity:result.humidity, 
-                        windRate: result.wind_speed, 
-                        weatherDescription:{
-                            weather_desc:result.weather_descriptions
-                        },
-                        weatherIcon:{
-                            weather_icon: result.weather_icons
-                        },
-                        city: city,
-                        time: location.localtime,
-                        weatherDetailVisible: true,
-                        cityAndTimeVisible: true
-                    });
-                    
-                    oView.setModel(oWeatherModel, "temperatureModel")
-                    this.showForecasts(cityName)            //In here we need to fetch the forecasts of the following seven days, in response to that our code calls this function
-                })
-                .catch((oError) => {
-                    console.log(oError)
-                    MessageBox.error("An error has occured")
-                    BusyIndicator.hide()
-                })
+                location = {},
+                oService = new TemperatureService()
+
+                oView.setBusy(true)              
+
+                oService.getForecast(cityName)
+                    .then((oData) => {
+                        result = oData.current
+                        location = oData.location
+                        var city = oData.request.query
+                        
+                        var oWeatherModel = new JSONModel({
+                            temperature:result.temperature, 
+                            humidity:result.humidity, 
+                            windRate: result.wind_speed, 
+                            weatherDescription:{
+                                weather_desc:result.weather_descriptions
+                            },
+                            weatherIcon:{
+                                weather_icon: result.weather_icons
+                            },
+                            city: city,
+                            time: location.localtime,
+                            weatherDetailVisible: true,
+                            cityAndTimeVisible: true
+                        });
+                        
+                        oView.setModel(oWeatherModel, "temperatureModel")
+                        //In here we need to fetch the forecasts of the following seven days, in response to that our code calls this function
+                    })
+                    .then(() => {
+//                        oView.setBusy(false)
+                        this.showForecasts(cityName)
+                    })
+                    .catch(error => console.log(error))
             },
             showForecasts: function(cityName){
                 //In this method, all the data will be visible via graphics which include both the max and min degrees of those following days
                 var oView = this.getView(),
-                    vUrl = `http://localhost:8080/getForecasts?city=${cityName}`,
+                    oForecastService = new ForecastService(),
                     oModelChart = new JSONModel(),
                     oVizFrame = oView.byId("idVizFrame"),
                     oVizPopover = oView.byId("idPopOver"),
@@ -140,24 +120,20 @@ sap.ui.define([
                         }
                     }
                 
-    
-                fetch(vUrl,{
-                    method: "GET"
-                })
-                .then((response) => response.json() )
+                oView.setBusy(true)
+
+                oForecastService.getForecasts(cityName)
                 .then((oData) => {
                     oData.data.splice(0, 1)    //Since we need to fetch the following seven days, we remove the first data of the array            
                     oModelChart.setData(oData.data) //In this section, our aim is setting the parameters of the chart container via dynamic values
                     oView.setModel(oModelChart, "chartData")
                     oVizFrame.setVizProperties(properties)
                     oVizPopover.connect(oVizFrame.getVizUid());
-                    BusyIndicator.hide();
                     this.setEverythingVisible()
                 })
-                .catch((oError) => {
-                    console.log(oError)
-                    BusyIndicator.hide();
-                })
+                .then(() => oView.setBusy(false))
+                .catch((error) => MessageBox.error(error))
+
             },
 
             setEverythingVisible: function(){
